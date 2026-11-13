@@ -5,17 +5,17 @@ annotated copy, `HH1neuron_commented.cpp`.
 
 ## Overview
 
-`HH1neuron.cpp` is a single-neuron numerical simulation, apparently intended
-as one component of a larger model of two neurons and one interneuron. As
-described by Oana Cucu, that system was intended to investigate vagal
-stimulation and the maintenance of respiratory arrhythmia in the heart.
+The wider proposed PhD project may have been called "A FitzHugh Nagumo model
+of respiratory arrhythmia." Oana Cucu recalls that it aimed to model a
+three-neuron system (two neurons and one interneuron) investigating vagal
+stimulation and respiratory arrhythmia in the heart. The exact project title
+and description have not yet been confirmed against project records.
 
-This source file alone implements only one neuron: it has a membrane-voltage
-state and three channel-gating states, with leak, sodium, and potassium
-currents. It does not show the other neurons, their connections, vagus-nerve
-stimulation, or a heart model. The intended system-level role above is based
-on the author's current recollection and should be checked against the
-original project materials.
+`HH1neuron.cpp` is one single-neuron simulation that may be associated with
+that larger project; this file alone does not implement the three-neuron
+network. It has a membrane-voltage state and three channel-gating states, with
+leak, sodium, and potassium currents. It does not show the other neurons,
+their connections, vagus-nerve stimulation, or a heart model.
 
 ## Model and numerical method
 
@@ -24,14 +24,13 @@ Runge-Kutta (RK4) method. The voltage equation includes leak, sodium, and
 potassium currents; the other three equations describe voltage-dependent
 channel gates conventionally labelled `m`, `h`, and `n`.
 
-Although the supervisor has described the project as using a
-FitzHugh-Nagumo model, the equations in this particular file look more like a
-conductance-based Hodgkin-Huxley-style model: they explicitly include three
-gating variables and separate sodium and potassium currents. The classical
-FitzHugh-Nagumo model is usually a reduced two-variable voltage/recovery
-system. The supervisor may be referring to a larger model, a reduction, or a
-different source file; confirm the intended model name and citation before
-treating this distinction as settled.
+The project is recalled as FitzHugh-Nagumo, but the equations in this
+particular file look more like a conductance-based Hodgkin-Huxley-style
+model: they explicitly include three gating variables and separate sodium
+and potassium currents. The classical FitzHugh-Nagumo model is usually a
+reduced two-variable voltage/recovery system. The project label may describe
+the larger network, a reduction, or another source file. Confirm the
+relationship and citation before treating this distinction as settled.
 
 The source also computes an interpolated delayed voltage, but that value is
 not used by the equations or output here. It calculates voltage-dependent
