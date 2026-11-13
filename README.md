@@ -71,6 +71,25 @@ The received source uses legacy C style and does not check whether the output
 file opened successfully. No build instructions or external dependencies
 were provided with the file.
 
+## Example simulation output
+
+The figures below show the original constant-current pulse (`I = 10`) and a
+separate illustrative comparison with its amplitude raised to `I = 15`. In
+both runs the pulse is on for `0 < t < 1000` and off otherwise. The source
+does not specify units, and the changed amplitude is not a validated
+physiological parameter choice.
+
+![Original simulation output: applied current and membrane voltage](simulation-output/HH1neuron.svg)
+
+*Original source parameters, with `I = 10`.*
+
+![Continuous-pulse comparison: applied current and membrane voltage](simulation-output/continuous-pulse/HH1neuron.svg)
+
+*Separate parameter variant with `I = 15`; the original `HH1neuron.cpp` is unchanged.*
+
+The simulation data, parameter variant, plotting script, and reproduction
+commands are in [`simulation-output/`](simulation-output/README.md).
+
 ## Provenance and attribution
 
 Created by Oana Cucu in 2015 as a project student in the Wellcome Trust Neural
