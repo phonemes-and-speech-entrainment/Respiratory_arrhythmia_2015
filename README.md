@@ -139,6 +139,8 @@ The experiments below are later investigations of the received source. They are 
 
 Each experiment has its own README, source variants and, where relevant, reproducibility scripts and numerical summaries. Results from exploratory reimplementations are explicitly identified as such and are not presented as direct C execution results. The Experiment 05 comparison is directly C-validated. The voltage-dependent branch of Experiment 02 remains an exploratory Python reimplementation and is labelled accordingly.
 
+A visual and technical guide to all six investigations, including a combined membrane-potential overview, is available in [`experiments/README.md`](experiments/README.md).
+
 ## Scope and limitations
 
 - This repository documents one single-neuron implementation, not a complete physiological system.
