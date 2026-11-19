@@ -1,3 +1,3 @@
 variant,minimum_voltage,maximum_voltage,final_voltage,upward_zero_crossing,downward_zero_crossing,max_abs_difference_during_stimulus_vs_original
-original,-72.7821221449,40.9217764128,-58.6295681049,1.98,3.28,0
+original,-72.7821221449,40.9217764128,-58.6295681049,1.98,3.26,0
 refreshed_k1,-72.7823270956,40.9227735819,-58.6622335962,1.98,3.26,1.7708069625
