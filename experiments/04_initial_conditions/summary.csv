@@ -1,0 +1,4 @@
+case,m0,h0,n0,pre_stimulus_min_V,pre_stimulus_min_time,stimulus_peak_V,stimulus_peak_time,final_V,upward_zero_crossings_during_stimulus,max_abs_difference_from_zero_gates_after_stimulus
+zero_gates,0,0,0,-69.079939,-996.98,40.921776,2.18,-58.629568,1,0
+half_steady_state,0.497706349914,0.000159114766286,0.488518979696,-69.981689,-998.14,40.921776,2.18,-58.629568,1,0
+full_steady_state,0.995412699829,0.000318229532572,0.977037959391,-75.997011,-999.46,40.921776,2.18,-58.629568,1,0
