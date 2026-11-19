@@ -110,8 +110,7 @@ int main(void)
       derivs(tt+tstep,y,dydx);
 
 
-
-	  fprintf(pf,"%lf\t%lf\t%lf\n",tt,Iexc,y[0]);
+
    }
 
    fclose(pf);
