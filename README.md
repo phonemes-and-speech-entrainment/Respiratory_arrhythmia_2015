@@ -1,106 +1,86 @@
-# HH1neuron
+# Single-neuron membrane model (2015 source)
 
-This README is intended to accompany the original `HH1neuron.cpp` and its
-annotated copy, `HH1neuron_commented.cpp`.
+This repository preserves a 2015 C/C++-style implementation of a single-neuron membrane model, alongside a set of clearly separated retrospective code investigations carried out in 2026.
 
-## Overview
+## Historical context
 
-The wider proposed PhD project may have been called "A FitzHugh Nagumo model
-of respiratory arrhythmia." Oana Cucu recalls that it aimed to model a
-three-neuron system (two neurons and one interneuron) investigating vagal
-stimulation and respiratory arrhythmia in the heart. The exact project title
-and description have not yet been confirmed against project records.
+The starting point was a small C++ implementation supplied by Prof. Alain Nogaret, based on a FitzHugh–Nagumo model, as a learning and development exercise during Oana Cucu's project in the Wellcome Trust Neural Dynamics programme at the University of Bristol. The task was to develop a three-channel Hodgkin–Huxley-type neuron model within that existing scaffold. The original code was developed with supervisory input; a small indexing/order issue in the derivative calculations was also corrected during that work.
 
-`HH1neuron.cpp` is one single-neuron simulation that may be associated with
-that larger project; this file alone does not implement the three-neuron
-network. It has a membrane-voltage state and three channel-gating states, with
-leak, sodium, and potassium currents. It does not show the other neurons,
-their connections, vagus-nerve stimulation, or a heart model.
+The repository contains a single-neuron simulation. It does not implement a multi-neuron network, a vagus-nerve model, a heartbeat model, or a complete respiratory–cardiac system. The wider physiological motivation and the precise relationship between this source file and the original FitzHugh–Nagumo starting implementation have not yet been verified against the 2015 project records. The retrospective notes therefore distinguish the received source and its observable behaviour from recollections about the wider project.
 
-## Model and numerical method
+## What the original program implements
 
-The code integrates four state variables using the classical fourth-order
-Runge-Kutta (RK4) method. The voltage equation includes leak, sodium, and
-potassium currents; the other three equations describe voltage-dependent
-channel gates conventionally labelled `m`, `h`, and `n`.
+The main source is [`HH1neuron.cpp`](HH1neuron.cpp), with an annotated copy in [`HH1neuron_commented.cpp`](HH1neuron_commented.cpp).
 
-The project is recalled as FitzHugh-Nagumo, but the equations in this
-particular file look more like a conductance-based Hodgkin-Huxley-style
-model: they explicitly include three gating variables and separate sodium
-and potassium currents. The classical FitzHugh-Nagumo model is usually a
-reduced two-variable voltage/recovery system. The project label may describe
-the larger network, a reduction, or another source file. Confirm the
-relationship and citation before treating this distinction as settled.
+It integrates four state variables using classical fourth-order Runge–Kutta (RK4):
 
-The source also computes an interpolated delayed voltage, but that value is
-not used by the equations or output here. It calculates voltage-dependent
-gate time constants in `derivs`, but the gate equations divide by the global
-`taui` values assigned once at the initial voltage. These are observations
-about the code as received, not changes to its behavior.
+- `y[0]`: membrane voltage;
+- `y[1]`: sodium activation gate (`m`);
+- `y[2]`: sodium inactivation gate (`h`);
+- `y[3]`: potassium activation gate (`n`).
 
-## Parameters in the source
+The voltage equation includes leak, sodium and potassium conductance currents, together with an applied external current. The three gates follow voltage-dependent steady-state curves and time-constant expressions. The source calculates the gate time constants once, at the initial voltage, and uses those fixed values in the gate equations. This fixed-time-constant behaviour is retained as the intended reference implementation.
 
-The source does not state the units. Names and interpretations below are
-tentative, based on their use in the equations.
+The initial values of all four state variables are zero. The program applies a current pulse with amplitude `I = 10` for `0 < t < 1000`, over a simulation window from `-1000` to `1000`. In the original source, `n = 10000`, giving a time step of `0.1`. The output file contains time, applied current and membrane voltage.
 
-| Symbol | Value | Apparent meaning |
-| --- | ---: | --- |
-| `gl`, `vl` | 0.2955, -54.11 | Leak conductance and leak reversal potential |
-| `gna`, `vna` | 118.79, 49.99 | Sodium conductance and reversal potential |
-| `gk`, `vk` | 20.35, -76.97 | Potassium conductance and reversal potential |
-| `C` | 1.0 | Membrane capacitance factor |
-| `vm`, `vh`, `vn` | -40.08, -59.91, -54.91 | Voltage midpoints for the `m`, `h`, and `n` gate curves; not the membrane-voltage state |
-| `dvm`, `dvh`, `dvn` | 14.9, -14.88, 29.28 | Voltage scale/slope parameters for those curves |
-| `tm0`, `tm1` | 0.1009, 0.3982 | Coefficients in the `m` gate time-constant expression |
-| `th0`, `th1` | 1.004, 7.047 | Coefficients in the `h` gate time-constant expression |
-| `tn0`, `tn1` | 1.012, 4.99 | Coefficients in the `n` gate time-constant expression |
-| `I` | 10.0 | Applied-current amplitude |
-| `tau` | 500.0 | Delay used in the delayed-voltage calculation; that calculation currently does not affect the simulation |
+The code also calculates a quantity named `yy0old` using a delayed-voltage interpolation. The value is not used by the differential equations or by the RK4 update. Experiment 06 investigates this calculation separately and finds that, in the tested implementation, it is initially zero and subsequently follows the current membrane voltage rather than providing a delayed copy.
 
-The membrane voltage is `y[0]`; the other state values `y[1]`, `y[2]`, and
-`y[3]` are the three gates. Initial values for all four states are zero.
+## Units and parameter conventions
 
-## Running and output
+The model uses the classical membrane-model units confirmed by the author:
 
-The program uses `n = 10000`, a positive-time window of `1000`, and a time
-step of `0.1`. It advances from time `-1000` to `1000`; the applied current
-`I` is used when `0 < t < 1000`. The program writes three tab-separated
-columns to `HH1neuron.dat`: time, applied current, and membrane voltage.
+| Quantity | Unit |
+|---|---|
+| Membrane voltage and reversal potentials | mV |
+| Time, integration step and time constants | ms |
+| Membrane capacitance | µF/cm² |
+| Membrane current density | mA/cm² |
+| Injected/applied current | nA |
+| Conductance density | mS/cm² |
+| Gating variables (`m`, `h`, `n`) | Dimensionless |
+| Rate constants (α, β; denoted `a`, `b` in the model notation) | ms⁻¹ |
 
-The received source uses legacy C style and does not check whether the output
-file opened successfully. No build instructions or external dependencies
-were provided with the file.
+The parameter values in the source are therefore interpreted using these units. In particular, conductances are conductance densities, while the applied stimulus `I` is an injected current, not a current density. The source's `a[,]` array stores the steady-state gate values; it should not be confused with a generic rate-constant symbol.
 
-## Example simulation output
+## Reproducing the original simulation
 
-The figures below show the original constant-current pulse (`I = 10`) and a
-separate illustrative comparison with its amplitude raised to `I = 15`. In
-both runs the pulse is on for `0 < t < 1000` and off otherwise. The source
-does not specify units, and the changed amplitude is not a validated
-physiological parameter choice.
+The original source is preserved without changing its model equations. It can be compiled as legacy C using a C compiler:
 
-![Original simulation output: applied current and membrane voltage](simulation-output/HH1neuron.svg)
+```sh
+gcc -x c -std=gnu89 -O0 HH1neuron.cpp -lm -o HH1neuron
+./HH1neuron
+```
 
-*Original source parameters, with `I = 10`.*
+The program writes `HH1neuron.dat` in the current working directory. See [`simulation-output/`](simulation-output/README.md) for the reproduced output and plotting instructions.
 
-![Continuous-pulse comparison: applied current and membrane voltage](simulation-output/continuous-pulse/HH1neuron.svg)
+## Retrospective experiments (2026)
 
-*Separate parameter variant with `I = 15`; the original `HH1neuron.cpp` is unchanged.*
+The experiments below are later investigations of the received source. They are not represented as part of the 2015 project, and the original source remains available unchanged.
 
-The simulation data, parameter variant, plotting script, and reproduction
-commands are in [`simulation-output/`](simulation-output/README.md).
+| Experiment | Question | Main result |
+|---|---|---|
+| [01 — Baseline reproduction](experiments/01_baseline_reproduction/README.md) | Does the original source run and reproduce a baseline trace? | The original program runs and produces a finite single-spike response for the supplied stimulus and parameters. |
+| [02 — Time-constant comparison](experiments/02_time_constant_comparison/README.md) | What changes if the gate time constants are recalculated continuously from voltage instead of held fixed? | The alternative produces substantially different firing behaviour. Fixed time constants remain the intended model; the alternative is a sensitivity test, not a correction. |
+| [03 — Integration-step comparison](experiments/03_integration_step_comparison/README.md) | How sensitive is the fixed-time-constant solution to the integration step? | A step of 0.02 gives a useful accuracy/cost compromise; 0.01 gives very similar peak measures. |
+| [04 — Initial conditions](experiments/04_initial_conditions/README.md) | What is the effect of starting the gates at zero versus their steady-state values? | The initial transients differ, but after the long pre-stimulus interval the stimulus-evoked responses converge at the reported precision. The original zero initialisation is retained. |
+| [05 — Stimulus-boundary handling](experiments/05_stimulus_boundary/README.md) | Is the first RK4 derivative refreshed after the applied current changes? | The original loop can carry a stale first derivative across stimulus transitions. A minimal refresh makes the RK4 stages consistent with the current stimulus value. |
+| [06 — Delayed-voltage calculation](experiments/06_delayed_vagus_output/README.md) | Does the legacy interpolation calculate a delayed membrane-voltage output? | In the tested C implementation, the candidate output is initially zero and then matches the current membrane voltage; it is not a functioning delay line. |
+
+Each experiment has its own README, source variants and, where relevant, reproducibility scripts and numerical summaries. Results from exploratory reimplementations are explicitly identified as such and are not presented as direct C execution results.
+
+## Scope and limitations
+
+- This repository documents one single-neuron implementation, not a complete physiological system.
+- The source is preserved as received for historical reference; retrospective experimental variants are kept separately.
+- The model's physiological interpretation, original publication/reference and exact 2015 project title have not yet been independently confirmed.
+- The retrospective experiments test implementation choices and numerical behaviour. They do not establish physiological validity or parameter identifiability.
+- Output values are written after each integration step but labelled with the step-start time in the original program; this historical convention is retained in the comparisons unless a README says otherwise.
+- The delayed-voltage calculation is retained as a source-level remnant, even though it does not feed back into the neuron equations.
 
 ## Provenance and attribution
 
-Created by Oana Cucu in 2015 as a project student in the Wellcome Trust Neural
-Dynamics CDT programme, at the University of Bristol, under the supervision
-of Prof. Alain Nogaret, Department of Physics, University of Bath. The file
-was later sent to the author by the supervisor.
+The 2015 project work was carried out by Oana Cucu as a project student in the Wellcome Trust Neural Dynamics programme at the University of Bristol, under the supervision of Prof. Alain Nogaret, Department of Physics, University of Bath. The initial code scaffold and scientific supervision were provided by Prof. Nogaret; the three-channel neuron implementation was developed by Oana with supervisory input.
 
-Copyright (c) 2015 Oana Cucu, Department of Physiology and Pharmacology,
-University of Bristol. Supervised by Prof. Alain Nogaret, Department of
-Physics, University of Bath.
+Copyright (c) 2015 Oana Cucu, Department of Physiology and Pharmacology, University of Bristol. Supervised by Prof. Alain Nogaret, Department of Physics, University of Bath.
 
-No publication, report, or exact project title has yet been identified. Add
-the relevant references and confirm the project title when available. This
-repository is distributed under the MIT License; see `LICENSE`.
+No publication or exact project title has yet been identified. Add the relevant reference if it becomes available. This repository is distributed under the MIT License; see [`LICENSE`](LICENSE).
