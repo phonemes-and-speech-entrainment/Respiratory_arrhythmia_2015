@@ -39,9 +39,9 @@ The following values were reproduced by compiling and running the two C variants
 | Maximum voltage | 40.921776 | 40.922774 |
 | Final voltage | −58.629568 | −58.662234 |
 | Upward zero crossing | 1.98 | 1.98 |
-| Downward zero crossing | 3.28 | 3.26 |
+| Downward zero crossing (linearly interpolated) | 3.26 | 3.26 |
 
-The largest absolute difference between the two voltage traces during the stimulus interval was approximately 1.771 model voltage units in the C execution. The trajectories are identical before the stimulus begins, as expected. The initial stimulus-boundary difference appears immediately after the current changes from zero to 10; a second small difference is introduced when the current switches off.
+The largest absolute difference between the two voltage traces during the stimulus interval was approximately 1.771 mV in the C execution. The trajectories are identical before the stimulus begins, as expected. The initial stimulus-boundary difference appears immediately after the current changes from zero to 10; a second small difference is introduced when the current switches off.
 
 The values are stored in [`summary.csv`](summary.csv).
 
