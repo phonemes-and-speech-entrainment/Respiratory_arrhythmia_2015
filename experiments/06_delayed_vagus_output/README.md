@@ -37,7 +37,15 @@ gcc -x c -std=gnu89 -O0 HH1neuron_vagus_output.cpp -lm -o experiment06
 
 The program writes `HH1neuron.dat`.
 
-## Execution results\n\nThe source compiled successfully with `gcc -x c -std=gnu89 -O0 HH1neuron_vagus_output.cpp -lm` and ran successfully. The resulting file contained 100,001 rows and four columns. The comparison above was made between the third column (current membrane voltage) and fourth column (legacy candidate output).\n\n## Interpretation and limitations
+## Execution results\n\nThe source compiled successfully with `gcc -x c -std=gnu89 -O0 HH1neuron_vagus_output.cpp -lm` and ran successfully. The resulting file contained 100,001 rows and four columns. The comparison above was made between the third column (current membrane voltage) and fourth column (legacy candidate output).\n\n## Membrane-potential and candidate-output plots
+
+![Membrane voltage and legacy candidate output](voltage_trace.svg)
+
+The full trace shows the key result: the candidate output is zero during the initial part of the simulation, then follows the membrane-voltage trace rather than appearing as a voltage waveform delayed by 500 ms. The close-up around the transition makes the point at which the two traces begin to coincide easier to see.
+
+Both curves are voltages, measured in mV. The candidate output is not a current and should not be interpreted as a separate vagus-nerve response. The plot is generated from a source-faithful Python reproduction of the experimental C source; the numerical equality reported above was separately confirmed from the direct C output file.
+
+## Interpretation and limitations
 
 The executed comparison confirms that the two voltage columns match after the initial zero segment. The current implementation's candidate output is therefore not functioning as a delayed voltage signal. It would be inappropriate to describe it as a verified neuron-to-vagus transmission signal or to infer excitation versus inhibition from it.
 
