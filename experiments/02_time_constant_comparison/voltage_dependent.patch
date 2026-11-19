@@ -1,0 +1,15 @@
+--- a/HH1neuron.cpp
++++ b/HH1neuron.cpp
+@@
+-   short i,j,k,n,p1,p2;
++   int i,j,k,n,p1,p2;
+@@
+-   n = 10000;
++   n = 20000; /* dt = 0.05 for this retrospective comparison */
+@@
+-   dyydx[1]=(aa0[0]-yy[1])/taui[0];
+-   dyydx[2]=(aa0[1]-yy[2])/taui[1];
+-   dyydx[3]=(aa0[2]-yy[3])/taui[2];
++   dyydx[1]=(aa0[0]-yy[1])/ttaui[0];
++   dyydx[2]=(aa0[1]-yy[2])/ttaui[1];
++   dyydx[3]=(aa0[2]-yy[3])/ttaui[2];
