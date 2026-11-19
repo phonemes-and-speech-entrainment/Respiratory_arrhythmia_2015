@@ -1,7 +1,7 @@
 # Experiment 02 — Fixed versus voltage-dependent gating time constants
 
 **Classification:** New retrospective experiment (2026); not presented as part of the 2015 work.  
-**Status:** Exploratory numerical comparison completed in Python; direct C++ validation remains outstanding.
+**Status:** Both variants have now been compiled and executed directly from the committed C source.
 
 ## Aim
 
@@ -38,7 +38,7 @@ gcc -x c -std=gnu89 -O0 HH1neuron.cpp -lm -o HH1neuron
 ./HH1neuron
 ```
 
-Important provenance note: the numerical table below comes from an earlier Python reimplementation of the equations, not from execution of the committed C++ variants. The fixed-time-constant baseline at `dt = 0.1` was independently reproduced by the original C++ program in Experiment 01. The other fixed-variant values are now independently reproduced by the C++ runs in Experiment 03. The voltage-dependent figures remain exploratory Python results and must not be presented as C++-validated results. To recreate the finer-step runs, change `n` in both copies to 50,000 (`dt = 0.02`) or 100,000 (`dt = 0.01`); for `dt = 0.1`, use `n = 10,000`. Keep all other parameters unchanged.
+The principal comparison below uses `dt = 0.05` and was rerun by compiling and executing both committed C sources. The fixed variant reproduces the Experiment 03 result at this step size. The voltage-dependent variant is now also directly C-validated. The finer-step values in the table remain from the earlier exploratory Python reimplementation; only the `dt = 0.05` comparison is directly validated here.
 
 ## Results
 
@@ -71,11 +71,11 @@ However, because the intended model uses fixed time constants, the different rep
 
 - The comparison is a retrospective computational investigation, not a reconstruction of a documented 2015 experiment.
 - The experimental copies retain the original stimulus handling and output time-label convention; those issues are investigated separately.
-- Physical units have not yet been confirmed and are intentionally not assigned here.
+- The model units are confirmed as mV for voltage, ms for time, µF/cm² for capacitance, mA/cm² for membrane current density, nA for injected current, mS/cm² for conductance density, and dimensionless for gating variables. Rate constants use ms⁻¹.
 - No claim is made that the voltage-dependent alternative is physiologically preferable. It is included to quantify the consequences of that implementation choice.
 
 ## Conclusion
 
 The original fixed-time-constant interpretation is consistent with the intended model as clarified by the user. The recalculated `ttaui` arrays are unnecessary for that formulation. The counterfactual voltage-dependent implementation produces markedly different firing behaviour and requires a smaller integration step for stable results.
 
-**Validation status:** Do not treat the voltage-dependent values as final C++ results. They are retained to document the initial exploratory calculation and will be replaced or confirmed after direct execution of the voltage-dependent C++ variant.
+**Validation status:** The `dt = 0.05` fixed-versus-voltage-dependent comparison is directly validated by C execution. The other voltage-dependent step-size results remain exploratory Python results.
