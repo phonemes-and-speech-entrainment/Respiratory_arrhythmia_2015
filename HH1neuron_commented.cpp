@@ -14,7 +14,7 @@
  * with the classical fourth-order Runge-Kutta method. Its three gates and
  * sodium/potassium ionic currents have a Hodgkin-Huxley-like form, rather
  * than the usual two-state FitzHugh-Nagumo form. The file alone does not
- * establish the model's publication, project title, or physical units.
+ * establish the model's publication or project title; the author has confirmed\r\n * the physical units, which are documented in the repository README.
  *
  * The code also calculates a delayed/interpolated voltage value, but that
  * value is not used by the differential equations or output in this file.
