@@ -69,7 +69,7 @@ The plotting routine in `run_experiment.py` creates a two-panel comparison:
 1. The early pre-stimulus transient, where the three initialisations produce different voltage trajectories.
 2. The stimulus response, where the three traces overlap.
 
-The axes are labelled with units to be confirmed, pending the separate check of the original model's physical units.
+The plot axes use the confirmed model units: time (ms) and membrane voltage (mV).
 
 ## Conclusion
 
