@@ -40,7 +40,7 @@ The model uses the classical membrane-model units confirmed by the author:
 | Gating variables (`m`, `h`, `n`) | Dimensionless |
 | Rate constants (A, B; corresponding to α, β in the model notation) | ms⁻¹ |
 
-The parameter values in the source are interpreted using these units. In particular, conductances are conductance densities, while the applied stimulus `I` is an injected current, not a current density. The A/B rate-constant notation (α/β) describes a unit convention; the original source does not implement separate α/β rate constants. It instead uses steady-state gate curves and time-constant expressions. In the code, the lowercase `a[3]` array stores the three gate steady-state values; it is not a vector of A rate constants. The scalar `a0` and `b0` variables are interpolation coefficients in the legacy voltage calculation, not α/β rate constants. The scalar constants A₀ and B₀ in the accompanying parameter notation should not be conflated with either of these code variables.
+The parameter values in the source are interpreted using these units. In particular, conductances are conductance densities, while the applied stimulus `I` is an injected current, not a current density. The A/B rate-constant notation (α/β) describes a unit convention; the original source does not implement separate α/β rate constants. It instead uses steady-state gate curves and time-constant expressions. In the code, the lowercase `a[3]` array stores the three gate steady-state values; it is not a vector of A rate constants. The scalar `a0` and `b0` variables are interpolation coefficients in the legacy voltage calculation, not α/β rate constants. The author has identified scalar A₀ and B₀ notation for the rate-constant convention. Neither uppercase A₀/B₀ nor a lowercase α/β rate-constant pair is implemented as a variable in this source. The source's lowercase `a0` and `b0` are interpolation coefficients, not those rate constants. If A₀/B₀ are required in a separate theoretical parameter table, their values should be documented there rather than assigned to these code variables.
 
 ## Source variable and constant inventory
 
@@ -88,7 +88,7 @@ This section describes the identifiers in the preserved original `HH1neuron.cpp`
 
 The RK4 function also accepts a `dyydx` pointer, uses it to form its first intermediate state, but uses the global `dydx` array in the final weighted sum. In the original call these refer to the same array, so this does not change the current execution; it is nevertheless a global-variable dependency worth noting.
 
-The original source does not contain an explicit vector of A/B (α/β) rate constants. The user's A₀/B₀ notation belongs to the parameter convention and should be documented as scalar notation where relevant; it must not be confused with the lowercase `a[3]` gate-value array or the interpolation scalars `a0` and `b0`.
+The original source does not contain an explicit vector of A/B (α/β) rate constants, nor separate uppercase A₀/B₀ variables. The lowercase `a[3]` array contains gate steady-state values; lowercase `a0` and `b0` are interpolation scalars. These identifiers must not be treated as α/β rate constants.
 
 ## Reproducing the original simulation
 
