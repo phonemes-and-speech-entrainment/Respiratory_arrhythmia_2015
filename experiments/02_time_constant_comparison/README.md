@@ -1,7 +1,7 @@
 # Experiment 02 — Fixed versus voltage-dependent gating time constants
 
 **Classification:** New retrospective experiment (2026); not presented as part of the 2015 work.  
-**Status:** C++ comparison completed.
+**Status:** Exploratory numerical comparison completed in Python; direct C++ validation remains outstanding.
 
 ## Aim
 
@@ -38,7 +38,7 @@ gcc -x c -std=gnu89 -O0 HH1neuron.cpp -lm -o HH1neuron
 ./HH1neuron
 ```
 
-The reported comparison data were generated from these two source variants at the four time steps shown in the table. To recreate the finer-step runs, change `n` in both copies to 50,000 (`dt = 0.02`) or 100,000 (`dt = 0.01`); for `dt = 0.1`, use `n = 10,000`. Keep all other parameters unchanged.
+Important provenance note: the numerical table below comes from an earlier Python reimplementation of the equations, not from execution of the committed C++ variants. The fixed-time-constant baseline at `dt = 0.1` was independently reproduced by the original C++ program in Experiment 01. The other fixed-variant values are now independently reproduced by the C++ runs in Experiment 03. The voltage-dependent figures remain exploratory Python results and must not be presented as C++-validated results. To recreate the finer-step runs, change `n` in both copies to 50,000 (`dt = 0.02`) or 100,000 (`dt = 0.01`); for `dt = 0.1`, use `n = 10,000`. Keep all other parameters unchanged.
 
 ## Results
 
@@ -55,7 +55,7 @@ The main comparison used `dt = 0.05` for both variants. Additional runs tested `
 | Voltage-dependent | 0.02 | 45.5119 | −74.7753 | −30.3730 | 63 |
 | Voltage-dependent | 0.01 | 45.5205 | −74.7753 | −30.3839 | 63 |
 
-All runs produced finite output values. At `dt = 0.1`, the voltage-dependent variant exhibits an extreme voltage excursion (approximately 453) and many additional zero crossings. This is strong evidence that this step size is too coarse for that alternative implementation. At `dt = 0.05`, `0.02`, and `0.01`, the voltage-dependent runs instead settle into a repeatable pattern of approximately 63 upward zero crossings during the stimulus. The peak voltage and final voltage are close between the 0.02 and 0.01 runs, indicating convergence of this alternative at those smaller steps.
+All runs produced finite output values. At `dt = 0.1`, the voltage-dependent variant exhibits an extreme voltage excursion (approximately 453) and many additional zero crossings. This is strong evidence that this step size is too coarse for that alternative implementation. At `dt = 0.05`, `0.02`, and `0.01`, the Python reimplementation instead produced approximately 63 upward zero crossings. The peak voltage and final voltage were close between the 0.02 and 0.01 runs. These observations are provisional until the C++ alternative is run and checked.
 
 The fixed-time-constant runs do not show sustained repetitive action potentials. Their maximum voltage converges from approximately 40.80 at `dt = 0.05` to 40.92 at `dt = 0.02` and 40.92 at `dt = 0.01`. The single upward crossing is consistent with the initial spike seen in Experiment 01.
 
@@ -63,7 +63,7 @@ The summary values are also provided in [`summary.csv`](summary.csv).
 
 ## Interpretation
 
-This experiment demonstrates that using the recalculated voltage-dependent time constants would substantially change the simulated behaviour. It also demonstrates that the coarse `dt = 0.1` step is inadequate for that alternative formulation.
+The exploratory Python comparison suggests that using the recalculated voltage-dependent time constants could substantially change the simulated behaviour. It also demonstrates that the coarse `dt = 0.1` step is inadequate for that alternative formulation.
 
 However, because the intended model uses fixed time constants, the different repetitive-firing behaviour is **not evidence that the original code is wrong**. The `ttaui` calculations inside `derivs()` are redundant under the clarified model specification. They can be removed in a future clean-up variant, but the original 2015 source is left unchanged.
 
@@ -77,3 +77,5 @@ However, because the intended model uses fixed time constants, the different rep
 ## Conclusion
 
 The original fixed-time-constant interpretation is consistent with the intended model as clarified by the user. The recalculated `ttaui` arrays are unnecessary for that formulation. The counterfactual voltage-dependent implementation produces markedly different firing behaviour and requires a smaller integration step for stable results.
+
+**Validation status:** Do not treat the voltage-dependent values as final C++ results. They are retained to document the initial exploratory calculation and will be replaced or confirmed after direct execution of the voltage-dependent C++ variant.
