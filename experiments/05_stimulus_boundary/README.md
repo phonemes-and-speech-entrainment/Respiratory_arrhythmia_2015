@@ -29,7 +29,7 @@ Run each executable from a separate working directory, because both write `HH1ne
 
 No model parameters, initial conditions, fixed time constants, stimulus amplitude, stimulus duration, delayed-voltage remnant or output format are otherwise changed.
 
-## Results — provisional Python comparison
+## Results — direct C comparison
 
 The following values were reproduced by compiling and running the two C variants. The minimum, maximum and final voltages and maximum absolute difference agree with the stored summary to the reported precision.
 
