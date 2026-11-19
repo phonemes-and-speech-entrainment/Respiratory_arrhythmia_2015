@@ -54,6 +54,14 @@ The complete machine-readable summary is in [`summary.csv`](summary.csv).
 
 The alternative initial conditions produce visibly different voltage transients immediately after the simulation begins at `t = −1000`. The largest differences occur during this initial settling period. However, the trajectories converge before the stimulus begins. In the six-decimal output data, all three voltage traces are identical from the stimulus period onwards. Each case produces the same single upward zero crossing and the same action-potential-like peak.
 
+## Membrane-potential plots
+
+![Membrane-potential traces for the three initial gate conditions](voltage_trace.svg)
+
+The full simulation and pre-stimulus close-up show that the initial gate values change the early voltage transient. The three cases then converge during the long pre-stimulus interval. In the stimulus-onset close-up, their voltage traces overlap, consistent with the identical stimulus-response summary values.
+
+This illustrates why the initialisation question needs both time scales: the initial conditions do matter immediately after the simulation starts, but for this particular 1000 ms pre-stimulus interval their differences have decayed before the stimulus is applied. The plot is generated from a source-faithful Python reproduction; the C execution results and summary table remain the quantitative reference.
+
 ## Interpretation
 
 This experiment shows that the initial gate values do affect the early transient, as expected for a system of differential equations whose state includes the gating variables. However, for the particular 1000-time-unit pre-stimulus interval used in this program, the differences have decayed before the external stimulus is applied.
