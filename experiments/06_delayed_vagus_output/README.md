@@ -7,7 +7,7 @@
 
 Investigate the legacy delayed-voltage calculation in the single-neuron model, in light of the author's recollection that this neuron was intended to provide an output signal to the vagus nerve.
 
-The working historical interpretation is a one-way output from the modelled neuron towards the vagus nerve. The vagus nerve, its receiving dynamics, any cardiac response, and heartbeat/respiratory-arrhythmia coupling are not modelled in this experiment. The exact physiological meaning, units, and intended downstream interpretation of the signal remain unconfirmed and should be checked against project records or the former supervisor if possible.
+The working historical interpretation is a one-way output from the modelled neuron towards the vagus nerve. The vagus nerve, its receiving dynamics, any cardiac response, and heartbeat/respiratory-arrhythmia coupling are not modelled in this experiment. The exact physiological meaning and intended downstream interpretation of the signal remain unconfirmed and should be checked against project records or the former supervisor if possible. The membrane-voltage and time units used by the model are confirmed as mV and ms.
 
 ## What the source does
 
@@ -43,7 +43,7 @@ The executed comparison confirms that the two voltage columns match after the in
 
 A true delayed output would require retaining past voltage samples (or an equivalent delay-line/history mechanism) and retrieving the value corresponding to the chosen delay. That would be a separate reconstruction choice and is deliberately not introduced here because the historical implementation and intended timing have not been established.
 
-No additional neuron is introduced. No vagus-nerve model, feedback pathway, gain, polarity, or cardiac model is added. Physical units are not assigned because they have not yet been confirmed.
+No additional neuron is introduced. No vagus-nerve model, feedback pathway, gain, polarity, or cardiac model is added. The model uses mV for membrane voltage and ms for time; the candidate output is a voltage and therefore follows the membrane-voltage unit.
 
 ## Conclusion
 
