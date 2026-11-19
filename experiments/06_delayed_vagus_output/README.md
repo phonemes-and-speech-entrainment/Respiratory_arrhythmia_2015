@@ -43,7 +43,7 @@ The program writes `HH1neuron.dat`.
 
 The full trace shows the key result: the candidate output is zero during the initial part of the simulation, then follows the membrane-voltage trace rather than appearing as a voltage waveform delayed by 500 ms. The close-up around the transition makes the point at which the two traces begin to coincide easier to see.
 
-Both curves are voltages, measured in mV. The candidate output is not a current and should not be interpreted as a separate vagus-nerve response. The plot is generated from a source-faithful Python reproduction of the experimental C source; the numerical equality reported above was separately confirmed from the direct C output file.
+Both curves are voltages, measured in mV. The candidate output is not a current and should not be interpreted as a separate vagus-nerve response. The plot is generated from a independent source-faithful reimplementation of the experimental C source; the numerical equality reported above was separately confirmed from the direct C output file.
 
 ## Interpretation and limitations
 
