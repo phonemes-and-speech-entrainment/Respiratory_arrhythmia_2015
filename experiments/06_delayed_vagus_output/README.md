@@ -1,7 +1,7 @@
 # Experiment 06 — Delayed neuronal output and the vagus nerve
 
 **Classification:** Retrospective investigation (2026), based on the author's recollection of the intended 2015 project.  
-**Status:** Experimental source added; numerical execution and comparison remain to be run locally.
+**Status:** Compiled and executed locally as C; the output comparison confirms the source-level finding below.
 
 ## Aim
 
@@ -15,7 +15,7 @@ The original source sets `tau = 500` and calculates `yy0old` from `y0top`, `y0bo
 
 However, inspection of the indexing and interpolation expression shows that, after the delayed index becomes positive, the expression algebraically returns `y0top`, which has just been assigned the current `y[0]`. Before that point, both stored values are set to zero and `yy0old` is zero. In other words, in this implementation the candidate output is zero initially and then follows the current membrane voltage; it does not demonstrably provide a 500-time-unit delayed copy.
 
-This is a source-level finding, not a claim about what the author originally intended. The original calculation is retained so its behaviour can be inspected rather than silently replaced with a newly invented delay implementation.
+This is confirmed by executing the experimental C source with the original model settings (`dt = 0.02`, 50,000 intervals in each direction). The program produced 100,001 rows. The candidate output was zero for the first 25,001 rows; on every subsequent row, `yy0old` matched the current `y[0]` exactly at the six-decimal output precision (maximum absolute difference: 0.000000 in the recorded file). For example, the first non-zero candidate output occurs at `t = -499.98`, where both voltage columns are `-64.473038`; at the final row (`t = 1000`), both are `-58.464283`. Thus the candidate output is not a 500-time-unit delayed trace: it is zero initially and then follows the current membrane voltage. This is a finding about the implementation, not a claim about what the author originally intended. The original calculation is retained so its behaviour can be inspected rather than silently replaced with a newly invented delay implementation.
 
 ## Experimental source
 
@@ -37,9 +37,9 @@ gcc -x c -std=gnu89 -O0 HH1neuron_vagus_output.cpp -lm -o experiment06
 
 The program writes `HH1neuron.dat`.
 
-## Interpretation and limitations
+## Execution results\n\nThe source compiled successfully with `gcc -x c -std=gnu89 -O0 HH1neuron_vagus_output.cpp -lm` and ran successfully. The resulting file contained 100,001 rows and four columns. The comparison above was made between the third column (current membrane voltage) and fourth column (legacy candidate output).\n\n## Interpretation and limitations
 
-If the two voltage columns match after the initial zero segment, that confirms that the current implementation's candidate output is not functioning as a delayed voltage signal. It would be inappropriate to describe it as a verified neuron-to-vagus transmission signal or to infer excitation versus inhibition from it.
+The executed comparison confirms that the two voltage columns match after the initial zero segment. The current implementation's candidate output is therefore not functioning as a delayed voltage signal. It would be inappropriate to describe it as a verified neuron-to-vagus transmission signal or to infer excitation versus inhibition from it.
 
 A true delayed output would require retaining past voltage samples (or an equivalent delay-line/history mechanism) and retrieving the value corresponding to the chosen delay. That would be a separate reconstruction choice and is deliberately not introduced here because the historical implementation and intended timing have not been established.
 
