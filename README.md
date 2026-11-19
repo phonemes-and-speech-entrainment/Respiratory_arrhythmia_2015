@@ -38,9 +38,57 @@ The model uses the classical membrane-model units confirmed by the author:
 | Injected/applied current | nA |
 | Conductance density | mS/cm² |
 | Gating variables (`m`, `h`, `n`) | Dimensionless |
-| Rate constants (α, β; denoted `a`, `b` in the model notation) | ms⁻¹ |
+| Rate constants (A, B; corresponding to α, β in the model notation) | ms⁻¹ |
 
-The parameter values in the source are therefore interpreted using these units. In particular, conductances are conductance densities, while the applied stimulus `I` is an injected current, not a current density. The source's `a[,]` array stores the steady-state gate values; it should not be confused with a generic rate-constant symbol.
+The parameter values in the source are interpreted using these units. In particular, conductances are conductance densities, while the applied stimulus `I` is an injected current, not a current density. The A/B rate-constant notation (α/β) describes a unit convention; the original source does not implement separate α/β rate constants. It instead uses steady-state gate curves and time-constant expressions. In the code, the lowercase `a[3]` array stores the three gate steady-state values; it is not a vector of A rate constants. The scalar `a0` and `b0` variables are interpolation coefficients in the legacy voltage calculation, not α/β rate constants. The scalar constants A₀ and B₀ in the accompanying parameter notation should not be conflated with either of these code variables.
+
+## Source variable and constant inventory
+
+This section describes the identifiers in the preserved original `HH1neuron.cpp`. It distinguishes variables that drive the neuron equations from implementation bookkeeping and calculations that do not affect the simulated state.
+
+### Variables used by the neuron model
+
+| Identifier | Role in the source |
+|---|---|
+| `y[0..3]` | Four state variables: membrane voltage, sodium activation, sodium inactivation and potassium activation. |
+| `dydx[0..3]` | Current derivative vector supplied to the RK4 integrator. |
+| `yout[0..3]` | State vector after one RK4 step. |
+| `gl`, `gna`, `gk` | Leak, sodium and potassium conductance densities. |
+| `vl`, `vna`, `vk` | Corresponding reversal potentials. |
+| `C` | Membrane capacitance in the voltage equation. |
+| `vm`, `vh`, `vn` | Voltage midpoints for the three gate steady-state curves. |
+| `dvm`, `dvh`, `dvn` | Slope parameters for those curves. |
+| `tm0`, `tm1`, `th0`, `th1`, `tn0`, `tn1` | Coefficients defining the three gate time constants. |
+| `taui[0..2]` | Fixed gate time constants calculated once in `main()`; these are the denominators actually used in the gate derivative equations. |
+| `I`, `Iexc` | Stimulus amplitude and applied current used in the membrane-voltage equation. |
+
+### Other variables used by the program
+
+| Identifier | Role and whether it affects the neuron dynamics |
+|---|---|
+| `ttime`, `tt`, `tstep` | Simulation-window length, current loop time and integration step. |
+| `n`, `i`, `j` | Loop count and loop indices. |
+| `k`, `p1`, `p2` | Integer indices used by the legacy delayed-voltage calculation; they do not enter the neuron equations. |
+| `pf` | Output-file handle. |
+| `y0top`, `y0bot` | Stored voltage samples used by the legacy interpolation. |
+| `a0`, `b0` | Scalar interpolation coefficients used to calculate `yy0old`; they are not rate constants. |
+| `yy0old` | Candidate delayed-voltage value. It is calculated but not used by the ODEs, RK4 update or original three-column output. |
+| `a[0..2]` | Gate steady-state values evaluated at the initial voltage in `main()`; not a vector of α/β rate constants. |
+| `aa0[0..2]` | Gate steady-state values recalculated inside `derivs()`; these are used in the gate derivative numerators. |
+
+### Declared or calculated but unused in the original source
+
+| Identifier | Finding |
+|---|---|
+| `PI` | Defined as a macro but never referenced. |
+| `z` in `derivs(double z, ...)` | Function argument is not read. |
+| `ttaui[0..2]` inside `derivs()` | Recalculated from the instantaneous voltage, but the gate derivatives divide by global `taui[0..2]`, not `ttaui[0..2]`. Thus `ttaui` does not affect the original model trajectory. |
+| `yy0old` | Calculated in the loop but not consumed elsewhere in the original program. |
+| `a[0..2]` after initialisation | Used to initialise `dydx[1..3]` before the loop; the loop's subsequent calls to `derivs()` use local `aa0[0..2]` instead. |
+
+The RK4 function also accepts a `dyydx` pointer, uses it to form its first intermediate state, but uses the global `dydx` array in the final weighted sum. In the original call these refer to the same array, so this does not change the current execution; it is nevertheless a global-variable dependency worth noting.
+
+The original source does not contain an explicit vector of A/B (α/β) rate constants. The user's A₀/B₀ notation belongs to the parameter convention and should be documented as scalar notation where relevant; it must not be confused with the lowercase `a[3]` gate-value array or the interpolation scalars `a0` and `b0`.
 
 ## Reproducing the original simulation
 
@@ -63,10 +111,10 @@ The experiments below are later investigations of the received source. They are 
 | [02 — Time-constant comparison](experiments/02_time_constant_comparison/README.md) | What changes if the gate time constants are recalculated continuously from voltage instead of held fixed? | The alternative produces substantially different firing behaviour. Fixed time constants remain the intended model; the alternative is a sensitivity test, not a correction. |
 | [03 — Integration-step comparison](experiments/03_integration_step_comparison/README.md) | How sensitive is the fixed-time-constant solution to the integration step? | A step of 0.02 gives a useful accuracy/cost compromise; 0.01 gives very similar peak measures. |
 | [04 — Initial conditions](experiments/04_initial_conditions/README.md) | What is the effect of starting the gates at zero versus their steady-state values? | The initial transients differ, but after the long pre-stimulus interval the stimulus-evoked responses converge at the reported precision. The original zero initialisation is retained. |
-| [05 — Stimulus-boundary handling](experiments/05_stimulus_boundary/README.md) | Is the first RK4 derivative refreshed after the applied current changes? | The original loop can carry a stale first derivative across stimulus transitions. A minimal refresh makes the RK4 stages consistent with the current stimulus value. |
+| [05 — Stimulus-boundary handling](experiments/05_stimulus_boundary/README.md) | Is the first RK4 derivative refreshed after the applied current changes? | Source inspection identifies a stale-first-derivative issue at stimulus transitions; the numerical comparison remains provisional pending direct C execution. |
 | [06 — Delayed-voltage calculation](experiments/06_delayed_vagus_output/README.md) | Does the legacy interpolation calculate a delayed membrane-voltage output? | In the tested C implementation, the candidate output is initially zero and then matches the current membrane voltage; it is not a functioning delay line. |
 
-Each experiment has its own README, source variants and, where relevant, reproducibility scripts and numerical summaries. Results from exploratory reimplementations are explicitly identified as such and are not presented as direct C execution results.
+Each experiment has its own README, source variants and, where relevant, reproducibility scripts and numerical summaries. Results from exploratory reimplementations are explicitly identified as such and are not presented as direct C execution results. The quantitative Experiment 05 comparison and the voltage-dependent branch of Experiment 02 remain provisional Python reimplementations; their README files state this limitation.
 
 ## Scope and limitations
 
