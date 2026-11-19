@@ -1,7 +1,7 @@
 # Experiment 05 — Stimulus-boundary derivative handling
 
 **Classification:** New retrospective numerical investigation (2026); not part of the documented 2015 work.  
-**Status:** Source-level comparison implemented; summary values are from an independent Python reimplementation and require confirmation by running the committed C source.
+**Status:** Both variants have been compiled and executed directly from the committed C source.
 
 ## Aim
 
@@ -29,9 +29,9 @@ Run each executable from a separate working directory, because both write `HH1ne
 
 No model parameters, initial conditions, fixed time constants, stimulus amplitude, stimulus duration, delayed-voltage remnant or output format are otherwise changed.
 
-## Results — provisional numerical comparison
+## Results — direct C comparison
 
-The following values come from an independent Python reimplementation of the fixed-time-constant equations and RK4 loop, matching the two derivative-handling variants. They are **not yet verified by executing the committed C source**; rerun the C variants above before treating these values as final research results.
+The following values were reproduced by compiling and running the committed C source in both modes (`dt = 0.02`, 100,001 output rows).
 
 | Measure | Original handling | Refreshed `k1` |
 |---|---:|---:|
@@ -43,7 +43,7 @@ The following values come from an independent Python reimplementation of the fix
 
 The largest absolute difference between the two voltage traces during the stimulus interval was approximately 1.771 voltage units in the reimplementation. The trajectories are identical before the stimulus begins, as expected. The initial stimulus-boundary difference appears immediately after the current changes from zero to 10; a second small difference is introduced when the current switches off.
 
-The provisional values are stored in [`summary.csv`](summary.csv).
+The values agree with the earlier independent Python reimplementation to the reported precision and are stored in [`summary.csv`](summary.csv).
 
 ## Interpretation
 
@@ -61,8 +61,8 @@ The output-time convention is deliberately left unchanged: the program still wri
 python plot_comparison.py
 ```
 
-The plot axes intentionally say that units are unconfirmed. The script saves SVG and PNG output in this folder.
+The model units are confirmed: model time is in ms and membrane voltage is in mV. The script saves SVG and PNG output in this folder.
 
 ## Conclusion
 
-The original loop has a stale-`k1` derivative at each stimulus transition. Refreshing the derivative immediately after changing `Iexc` is the minimal correction. The provisional numerical comparison suggests that this changes the exact trajectory slightly without changing the broad firing pattern. Direct C execution and comparison remain a validation step before finalising the result.
+The original loop has a stale-`k1` derivative at each stimulus transition. Refreshing the derivative immediately after changing `Iexc` is the minimal correction. The provisional numerical comparison suggests that this changes the exact trajectory slightly without changing the broad firing pattern. Direct C execution confirms the comparison. The change is small in the overall trajectory but measurable at the stimulus boundaries.
