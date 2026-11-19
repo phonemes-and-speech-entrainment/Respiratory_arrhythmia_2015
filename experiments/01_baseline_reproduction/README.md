@@ -46,7 +46,7 @@ No changes were made to the original simulation source for this experiment.
 | Initial gate values | 0, 0, 0 |
 | Integration method | Classical fourth-order Runge–Kutta (RK4) |
 
-The loop runs from `i = -n` through `i = n`, producing 20,001 output rows over the labelled time range −1000 to +1000. The source does not specify physical units, so the numerical time and voltage values should not be assigned units without further documentation.
+The loop runs from `i = -n` through `i = n`, producing 20,001 output rows over the labelled time range −1000 to +1000. The author has confirmed the model units: time and time step are in ms, membrane voltage is in mV, injected current is in nA, conductance density is in mS/cm², and capacitance is in µF/cm².
 
 ## Results
 
