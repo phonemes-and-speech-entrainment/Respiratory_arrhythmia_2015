@@ -64,7 +64,7 @@ All four runs show one upward crossing and one downward crossing of zero voltage
 - The original source writes the state after an RK4 step but labels it with the step's starting time `tt`. The time labels in the tables therefore retain the original one-step offset; this experiment does not silently correct it.
 - The stimulus transition handling is also retained unchanged. Its effect is investigated separately in the stimulus-boundary experiment.
 - The original source's `short` loop index is adequate at `n = 10,000` and `20,000`, but not at `n = 50,000` or `100,000`. The experimental variants use `int` to make those runs valid.
-- Physical units have not yet been confirmed and are intentionally omitted.
+- Units are confirmed: time and integration step in ms; voltage in mV; capacitance in µF/cm²; membrane current density in mA/cm²; injected current in nA; conductance density in mS/cm²; and gating variables dimensionless.
 
 ## Conclusion
 
