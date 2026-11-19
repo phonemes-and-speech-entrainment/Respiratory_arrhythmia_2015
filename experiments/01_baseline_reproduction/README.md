@@ -81,7 +81,7 @@ These are not corrections made in Experiment 01. They are recorded so later expe
 
 The full trace shows the long pre-stimulus evolution, the stimulus-evoked spike near the beginning of the positive-time interval, and the subsequent return towards the later voltage level. The close-up makes the spike shape easier to inspect. This is the reference response against which the later experiments should be interpreted: one initial spike, not a train of repeated bursts.
 
-This figure is generated from a source-faithful Python reproduction of the original baseline loop. The original C execution and byte-for-byte output reproduction described above remain the validation reference; the plot is not presented as a newly captured C output file.
+This figure is generated from a independent source-faithful reimplementation of the original baseline loop. The original C execution and byte-for-byte output reproduction described above remain the validation reference; the plot is not presented as a newly captured C output file.
 
 ## Conclusion
 
