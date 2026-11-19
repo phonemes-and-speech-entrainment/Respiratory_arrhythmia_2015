@@ -61,6 +61,10 @@ The fixed-time-constant runs do not show sustained repetitive action potentials.
 
 The summary values are also provided in [`summary.csv`](summary.csv).
 
+![Experiment 02 time-step sensitivity comparison](experiment02_step_sensitivity.svg)
+
+The figure compares peak voltage and upward zero-crossing counts across the tested integration steps. It deliberately labels the fixed-time-constant series as C execution and the voltage-dependent series as an exploratory Python reimplementation; the latter has not yet been validated by compiling the committed alternative C source.
+
 ## Interpretation
 
 The exploratory Python comparison suggests that using the recalculated voltage-dependent time constants could substantially change the simulated behaviour. It also demonstrates that the coarse `dt = 0.1` step is inadequate for that alternative formulation.
