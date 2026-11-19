@@ -20,15 +20,25 @@ For the finer time steps, the loop and delay indices were changed from `short` t
 
 ## Reproduction
 
-The source for the fixed variant is the original `HH1neuron.cpp` with only the time-step/index test settings adjusted. The voltage-dependent variant is obtained by additionally substituting `ttaui` for `taui` in the three gate derivatives. The exact minimal change is recorded in [`voltage_dependent.patch`](voltage_dependent.patch).
+The complete experimental C++ sources are included in this folder:
 
-Compile the experimental copies as legacy C, as for Experiment 01:
+- [Fixed time constants](fixed/HH1neuron.cpp) — original fixed-time-constant equations, with the time-step/index settings adjusted for this comparison.
+- [Voltage-dependent time constants](voltage_dependent/HH1neuron.cpp) — the same experimental source, with only the three gating derivative denominators changed from `taui` to `ttaui`.
+
+Both copies retain the original parameter values, initial conditions, stimulus logic, delayed-voltage remnant and output convention. The experimental copies use `int` rather than `short` for the loop and delay indices so the finer-step runs can represent their larger index values. They also use a standard `int main(void)` declaration and check whether the output file opened successfully; these are portability/safety adjustments, not changes to the model.
+
+Compile and run each variant from its own folder (both programs write `HH1neuron.dat` to the current working directory):
 
 ```sh
+cd fixed
 gcc -x c -std=gnu89 -O0 HH1neuron.cpp -lm -o HH1neuron
+./HH1neuron
+cd ../voltage_dependent
+gcc -x c -std=gnu89 -O0 HH1neuron.cpp -lm -o HH1neuron
+./HH1neuron
 ```
 
-Run each variant in a separate working directory because both write `HH1neuron.dat`.
+The reported comparison data were generated from these two source variants at the four time steps shown in the table. To recreate the finer-step runs, change `n` in both copies to 50,000 (`dt = 0.02`) or 100,000 (`dt = 0.01`); for `dt = 0.1`, use `n = 10,000`. Keep all other parameters unchanged.
 
 ## Results
 
