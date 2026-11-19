@@ -60,7 +60,7 @@ The alternative initial conditions produce visibly different voltage transients 
 
 The full simulation and pre-stimulus close-up show that the initial gate values change the early voltage transient. The three cases then converge during the long pre-stimulus interval. In the stimulus-onset close-up, their voltage traces overlap, consistent with the identical stimulus-response summary values.
 
-This illustrates why the initialisation question needs both time scales: the initial conditions do matter immediately after the simulation starts, but for this particular 1000 ms pre-stimulus interval their differences have decayed before the stimulus is applied. The plot is generated from a source-faithful Python reproduction; the C execution results and summary table remain the quantitative reference.
+This illustrates why the initialisation question needs both time scales: the initial conditions do matter immediately after the simulation starts, but for this particular 1000 ms pre-stimulus interval their differences have decayed before the stimulus is applied. The plot is generated from a independent source-faithful reimplementation; the C execution results and summary table remain the quantitative reference.
 
 ## Interpretation
 
