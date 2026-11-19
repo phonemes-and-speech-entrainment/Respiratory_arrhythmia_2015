@@ -39,8 +39,7 @@ def summarise(path):
         if voltage[i-1] >= 0 > voltage[i]:
             downward.append(times[i])
     return {
-        "step": 1000.0 / int(round((times[-1] - times[0]) / (len(rows)-1) * 0 + 1000)),
-        "rows": len(rows),
+                "rows": len(rows),
         "minimum_voltage": voltage[imin],
         "time_of_minimum": times[imin],
         "maximum_voltage": voltage[imax],
@@ -59,7 +58,7 @@ def main():
     summaries = []
     plot_data = []
     for n in INTERVAL_COUNTS:
-        variant = re.sub(r"\\bn\\s*=\\s*\\d+\\s*;", f"n = {n};", source, count=1)
+        variant = re.sub(r"n *= *[0-9]+ *;", f"n = {n};", source, count=1)
         if variant == source:
             raise RuntimeError("Could not find the n assignment in the source")
         run_dir = OUTPUT / f"dt_{1000/n:.2f}"
