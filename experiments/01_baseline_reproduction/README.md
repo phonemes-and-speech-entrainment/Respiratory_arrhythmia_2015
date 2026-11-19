@@ -75,6 +75,14 @@ This experiment deliberately preserves the original implementation, including be
 
 These are not corrections made in Experiment 01. They are recorded so later experiments can isolate and evaluate them without changing the reference implementation.
 
+## Membrane-potential plots
+
+![Baseline membrane-potential trace](voltage_trace.svg)
+
+The full trace shows the long pre-stimulus evolution, the stimulus-evoked spike near the beginning of the positive-time interval, and the subsequent return towards the later voltage level. The close-up makes the spike shape easier to inspect. This is the reference response against which the later experiments should be interpreted: one initial spike, not a train of repeated bursts.
+
+This figure is generated from a source-faithful Python reproduction of the original baseline loop. The original C execution and byte-for-byte output reproduction described above remain the validation reference; the plot is not presented as a newly captured C output file.
+
 ## Conclusion
 
 The original source compiles and runs in legacy C mode, and its output has been reproduced exactly. The resulting dataset is therefore suitable as the baseline reference for the subsequent experiments. Any later changes to equations, numerical handling, or parameters must be documented as retrospective experimental variants, not as part of the original 2015 implementation.
