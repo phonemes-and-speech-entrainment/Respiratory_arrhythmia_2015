@@ -42,6 +42,29 @@ The model uses the classical membrane-model units confirmed by the author:
 
 The parameter values in the source are interpreted using these units. In particular, conductances are conductance densities, while the applied stimulus `I` is an injected current, not a current density. The A/B rate-constant notation (α/β) describes a unit convention; the original source does not implement separate α/β rate constants. It instead uses steady-state gate curves and time-constant expressions. In the code, the lowercase `a[3]` array stores the three gate steady-state values; it is not a vector of A rate constants. The scalar `a0` and `b0` variables are interpolation coefficients in the legacy voltage calculation, not α/β rate constants. The author has identified scalar A₀ and B₀ notation for the rate-constant convention. Neither uppercase A₀/B₀ nor a lowercase α/β rate-constant pair is implemented as a variable in this source. The source's lowercase `a0` and `b0` are interpolation coefficients, not those rate constants. If A₀/B₀ are required in a separate theoretical parameter table, their values should be documented there rather than assigned to these code variables.
 
+### Parameter values in the original source
+
+| Source identifier | Value | Meaning | Unit |
+|---|---:|---|---|
+| `gl` | 0.2955 | Leak conductance density | mS/cm² |
+| `vl` | −54.11 | Leak reversal potential | mV |
+| `gna` | 118.79 | Sodium conductance density | mS/cm² |
+| `vna` | 49.99 | Sodium reversal potential | mV |
+| `gk` | 20.35 | Potassium conductance density | mS/cm² |
+| `vk` | −76.97 | Potassium reversal potential | mV |
+| `C` | 1.0 | Membrane capacitance | µF/cm² |
+| `vm`, `vh`, `vn` | −40.08, −59.91, −54.91 | Midpoint voltages for the m, h and n steady-state curves | mV |
+| `dvm`, `dvh`, `dvn` | 14.9, −14.88, 29.28 | Slope parameters for the m, h and n curves | mV |
+| `tm0`, `tm1` | 0.1009, 0.3982 | Coefficients for the m-gate time constant | ms |
+| `th0`, `th1` | 1.004, 7.047 | Coefficients for the h-gate time constant | ms |
+| `tn0`, `tn1` | 1.012, 4.99 | Coefficients for the n-gate time constant | ms |
+| `I` | 10.0 | Applied stimulus amplitude | nA |
+| `ttime` | 1000.0 | Positive-time window length; the loop spans −1000 to +1000 | ms |
+| `n` | 10000 | Number of intervals in the positive-time window; gives `dt = 0.1` | Dimensionless count |
+| `tau` | 500.0 | Parameter used only in the legacy delayed-voltage calculation | ms |
+
+The original source does not contain explicit scalar α/β rate functions or named rate constants A₀/B₀. The six `t*0`/`t*1` values above parameterise the gate time-constant curves; they are not α/β rate constants. A₀/B₀ should only be listed as separate model parameters if they are defined in the original mathematical specification, not inferred from the similarly named interpolation variables in this C source.
+
 ## Source variable and constant inventory
 
 This section describes the identifiers in the preserved original `HH1neuron.cpp`. It distinguishes variables that drive the neuron equations from implementation bookkeeping and calculations that do not affect the simulated state.
