@@ -1,7 +1,7 @@
 # Experiment 05 — Stimulus-boundary derivative handling
 
 **Classification:** New retrospective numerical investigation (2026); not part of the documented 2015 work.  
-**Status:** Both variants have been compiled and executed directly from the committed C source.
+**Status:** Source-level comparison is complete; the numerical values below are from an exploratory Python reimplementation and have not yet been validated by running both committed C variants.
 
 ## Aim
 
@@ -29,9 +29,9 @@ Run each executable from a separate working directory, because both write `HH1ne
 
 No model parameters, initial conditions, fixed time constants, stimulus amplitude, stimulus duration, delayed-voltage remnant or output format are otherwise changed.
 
-## Results — direct C comparison
+## Results — provisional Python comparison
 
-The following values were reproduced by compiling and running the committed C source in both modes (`dt = 0.02`, 100,001 output rows).
+The following values come from an independent Python reimplementation of the two derivative-handling variants (`dt = 0.02`). They should be treated as provisional until both committed C variants are compiled and run.
 
 | Measure | Original handling | Refreshed `k1` |
 |---|---:|---:|
@@ -41,9 +41,9 @@ The following values were reproduced by compiling and running the committed C so
 | Upward zero crossing | 1.98 | 1.98 |
 | Downward zero crossing | 3.28 | 3.26 |
 
-The largest absolute difference between the two voltage traces during the stimulus interval was approximately 1.771 voltage units in the reimplementation. The trajectories are identical before the stimulus begins, as expected. The initial stimulus-boundary difference appears immediately after the current changes from zero to 10; a second small difference is introduced when the current switches off.
+The largest absolute difference between the two voltage traces during the stimulus interval was approximately 1.771 model voltage units in this reimplementation. The trajectories are identical before the stimulus begins, as expected. The initial stimulus-boundary difference appears immediately after the current changes from zero to 10; a second small difference is introduced when the current switches off.
 
-The values agree with the earlier independent Python reimplementation to the reported precision and are stored in [`summary.csv`](summary.csv).
+The provisional values are stored in [`summary.csv`](summary.csv).
 
 ## Interpretation
 
@@ -65,4 +65,4 @@ The model units are confirmed: model time is in ms and membrane voltage is in mV
 
 ## Conclusion
 
-The original loop has a stale-`k1` derivative at each stimulus transition. Refreshing the derivative immediately after changing `Iexc` is the minimal correction. The provisional numerical comparison suggests that this changes the exact trajectory slightly without changing the broad firing pattern. Direct C execution confirms the comparison. The change is small in the overall trajectory but measurable at the stimulus boundaries.
+The original loop has a stale-`k1` derivative at each stimulus transition. Refreshing the derivative immediately after changing `Iexc` is the minimal correction. The provisional numerical comparison suggests that this changes the exact trajectory slightly without changing the broad firing pattern. Direct C execution remains a validation step before treating the numerical comparison as final.
