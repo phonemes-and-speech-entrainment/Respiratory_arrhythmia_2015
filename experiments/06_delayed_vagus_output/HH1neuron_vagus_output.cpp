@@ -41,7 +41,7 @@ int main(void)
    tn1 = 4.99;
    C = 1.;
    I = 10.;
-   tau = 500.;		/* delay in seconds */
+   tau = 500.;		/* delay parameter; physical units unconfirmed */
    k = (int)(tau/tstep);	/* delay index */
 
    pf = fopen("HH1neuron.dat","w+");
