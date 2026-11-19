@@ -18,7 +18,7 @@ int main(void)
    int i,j,k,n,p1,p2;
    FILE *pf;
 
-   n = 20000; /* dt = 0.05 */		/* number of time intervals */
+   n = 50000; /* dt = 0.02 */		/* number of time intervals */
    ttime = 1000.;	/* Time window */
    tstep = ttime/n;	/* Time step */
    gl = 0.2955; /*leak conductance of neuron 1*/
