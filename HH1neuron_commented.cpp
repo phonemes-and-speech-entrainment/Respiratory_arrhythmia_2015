@@ -28,7 +28,7 @@ void derivs(double, double *, double *);
 /* State, derivatives, and temporary output for the four ODE variables. */
 double y[4],dydx[4],yout[4];
 
-/* Steady-state activation and time constants for the m, h, and n gates. */
+/* Initial steady-state gate values and fixed time constants for m, h, n. */
 double a[3],taui[3];
 
 /* Previous-step voltage samples used when constructing the delayed value. */
@@ -41,6 +41,15 @@ double y0top,y0bot;
  */
 double gl,vl,gna,vna,gk,vk,C,vm,dvm,vh,dvh,vn,dvn,tm0,tm1,th0,th1,tn0,tn1,tau,I,Iexc,yy0old;
 
+/* Source-audit notes:
+ * PI is defined but never used.
+ * The z argument of derivs() is not read.
+ * derivs() calculates local ttaui[3], but the gate derivatives divide by
+ * the global taui[3]; therefore ttaui does not affect this implementation.
+ * yy0old is calculated but is not used by the ODEs, RK4 update or output.
+ * a[3] stores the three initial steady-state gate values; it is not an
+ * alpha/beta rate-constant vector. a0 and b0 below are interpolation scalars.
+ */
 /* Run the simulation, write tab-separated time/current/voltage data. */
 main()
 {
