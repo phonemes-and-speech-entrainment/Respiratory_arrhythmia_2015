@@ -37,7 +37,7 @@ double y0top,y0bot;
 
 /*
  * Membrane/channel parameters; see the repository README for the author's
- * confirmed classical membrane-model units. vm, vh, and vn are voltage midpoints for the m, h, and n gate curves;
+ * confirmed classical membrane-model units.\n * vm, vh, and vn are voltage midpoints for the m, h, and n gate curves;
  * they are not the membrane-voltage state (y[0]).
  */
 double gl,vl,gna,vna,gk,vk,C,vm,dvm,vh,dvh,vn,dvn,tm0,tm1,th0,th1,tn0,tn1,tau,I,Iexc,yy0old;
