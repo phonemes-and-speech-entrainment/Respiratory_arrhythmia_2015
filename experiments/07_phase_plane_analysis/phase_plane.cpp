@@ -30,7 +30,7 @@ int main(){
  std::fprintf(fp,"time_ms,applied_current_nA,V_mV,m,h,n\n");
  const int nsteps=50000;
  for(int i=-nsteps;i<=nsteps;i++){
-  double t=dt*i,I=(t>0.&&t<window_)?stim:0.,z[4];rk4(y,k1,I,z);
+  double t=dt*i,I=(t>0.&&t<window)?stim:0.,z[4];rk4(y,k1,I,z);
   for(int j=0;j<4;j++)y[j]=z[j];
   std::fprintf(fp,"%.8f,%.8f,%.10f,%.10f,%.10f,%.10f\n",t+dt,I,y[0],y[1],y[2],y[3]);
   f(y,I,k1);
