@@ -17,6 +17,10 @@ The plots below provide a visual overview of the membrane-potential behaviour in
 | [05 — Stimulus-boundary handling](05_stimulus_boundary/README.md) | Original RK4 first-derivative handling versus refreshing k1 at stimulus transitions | The traces differ slightly around stimulus onset and offset but retain the same broad response. |
 | [06 — Legacy candidate output](06_delayed_vagus_output/README.md) | Membrane voltage versus the legacy candidate delayed-voltage output | The candidate is initially zero and then follows current membrane voltage; it does not behave as a delayed copy in the tested source. |
 
+## Experiment 07 — Phase-plane and equilibrium analysis
+
+[Experiment 07](07_phase_plane_analysis/README.md) adds a mathematical analysis of the four-state model: gate nullclines, projected phase-plane trajectories, equilibria under constant input, and local stability from Jacobian eigenvalues. It includes a separate C++ trajectory exporter and a Python plotting/analysis script. The experiment README explains the equations, numerical root finding, nullcline construction and stability interpretation.
+
 ## How to read the plots
 
 - All membrane-voltage axes use mV and all time axes use ms.
