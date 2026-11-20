@@ -141,6 +141,11 @@ Each experiment has its own README, source variants and, where relevant, reprodu
 
 A visual and technical guide to all six investigations, including a combined membrane-potential overview, is available in [`experiments/README.md`](experiments/README.md).
 
+
+## Experiment 07 — Phase-plane and equilibrium analysis
+
+[Experiment 07](experiments/07_phase_plane_analysis/README.md) extends the fixed-time-constant reference model with a separate C++ trajectory exporter and Python analysis. It examines the three gate nullclines, projected V–m/V–h/V–n trajectories, constant-input equilibria, and local stability using a finite-difference Jacobian. The README derives the calculations and explains how to reproduce the plots. These two-dimensional plots are projections/slices of the four-dimensional model, not complete two-dimensional systems.
+
 ## Scope and limitations
 
 - This repository documents one single-neuron implementation, not a complete physiological system.
