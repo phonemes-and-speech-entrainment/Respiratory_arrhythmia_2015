@@ -1,0 +1,13 @@
+Fixed gate time constants at initial V=0 mV (ms): [0.10817313 1.0129674  1.45979831]
+
+I = 0 nA
+Equilibrium [V,m,h,n] = [-6.447303848e+01  3.646579277e-02  6.486958577e-01  3.422658583e-01]
+Jacobian eigenvalues = [-9.4170038+0.j        -0.5503367+0.6457423j -0.5503367-0.6457423j
+ -0.9774902+0.j       ]
+Locally asymptotically stable
+
+I = 10 nA
+Equilibrium [V,m,h,n] = [-58.464283011   0.078154573   0.451573084   0.43960165 ]
+Jacobian eigenvalues = [-10.2629257+0.j        -0.3894333+1.175966j  -0.3894333-1.175966j
+  -0.955959 +0.j      ]
+Locally asymptotically stable
